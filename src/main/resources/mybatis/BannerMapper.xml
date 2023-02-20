@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zerobase.fastlms.banner.mapper.BannerMapper">
+
+    <select id="selectListCt" resultType="long">
+        select count(*)
+        from banner_info
+        where 1 = 1
+    </select>
+
+    <select id="selectList" resultType="com.zerobase.fastlms.banner.entity.BannerEntity">
+        select *
+        from banner_info
+        where 1 = 1
+            limit #{pageStart}, #{pageEnd}
+    </select>
+
+</mapper>
