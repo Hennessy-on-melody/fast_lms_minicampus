@@ -27,11 +27,11 @@ public class BannerImpl implements AdminBanner {
     @Override
     public boolean add(BannerInput param) {
         bannerRepository.save(BannerEntity.builder()
-                .name(param.getBannerName())
+                .bannerName(param.getBannerName())
                 .path(param.getPath())
                 .openMethod(param.getOpenMethod())
-                .num(param.getNum())
-                .isPost(param.isPosted())
+                .bannerNum(param.getNum())
+                .bannerIsPost(param.isPosted())
                 .createdDt(LocalDateTime.now())
                 .fileName(param.getFileName())
                 .urlName(param.getUrlName())
@@ -46,11 +46,11 @@ public class BannerImpl implements AdminBanner {
             return false;
         }
         BannerEntity bannerEntity = optionalInfo.get();
-        bannerEntity.setName(param.getBannerName());
+        bannerEntity.setBannerName(param.getBannerName());
         bannerEntity.setPath(param.getPath());
         bannerEntity.setOpenMethod(param.getOpenMethod());
-        bannerEntity.setNum(param.getNum());
-        bannerEntity.setPost(param.isPosted());
+        bannerEntity.setBannerNum(param.getNum());
+        bannerEntity.setBannerIsPost(param.isPosted());
         bannerEntity.setFileName(param.getFileName());
         bannerEntity.setEditedDt(LocalDateTime.now());
 
@@ -89,10 +89,10 @@ public class BannerImpl implements AdminBanner {
     private BannerDto build(BannerEntity entity) {
         return BannerDto.builder()
                 .id(entity.getId())
-                .name(entity.getName())
+                .name(entity.getBannerName())
                 .path(entity.getPath())
-                .num(entity.getNum())
-                .isPost(entity.isPost())
+                .num(entity.getBannerNum())
+                .isPost(entity.isBannerIsPost())
                 .urlName(entity.getUrlName())
                 .createdDt(entity.getCreatedDt().format(DateTimeFormatter.ofPattern("yyyy--MM--dd")))
                 .build();
@@ -137,7 +137,7 @@ public class BannerImpl implements AdminBanner {
         List<BannerDto> postedBannerDtoList = new ArrayList<>();
 
         for (BannerEntity entity : bannerRepository.findAll()) {
-            if (entity.isPost()) {
+            if (entity.isBannerIsPost()) {
                 postedBannerDtoList.add(build(entity));
             }
         }

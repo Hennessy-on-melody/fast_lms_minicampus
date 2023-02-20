@@ -26,11 +26,11 @@ public class BannerEntity {
 
 
 
-    private String name;
+    private String bannerName;
     private String path;
     private String openMethod;
-    private int num;
-    boolean isPost;
+    private int bannerNum;
+    boolean bannerIsPost;
 
     private LocalDateTime createdDt;
     private LocalDateTime editedDt;

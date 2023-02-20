@@ -61,22 +61,22 @@ public class BannerController extends BaseController{
                             MultipartFile file){
 
 
-        String saveFile = "";
-        String urlFile = "";
+        String saveFileName = "";
+        String urlFileName = "";
 
         if (file != null){
-            String leadFile = file.getOriginalFilename();
+            String originalFilename = file.getOriginalFilename();
 
-            String basePath = "/Users/hennessy_on_melody/Desktop/Project/fastlms3/files";
+            String basePath = "/Users/hennessy_on_melody/Desktop/Project/lms_hennessy/files";
             String baseUrl = "/files";
 
-            String[] fileArr = saveNewFile(basePath, baseUrl, leadFile);
+            String[] fileArr = getNewSaveFile(basePath, baseUrl, originalFilename);
 
-            saveFile = fileArr[0];
-            urlFile = fileArr[1];
+            saveFileName = fileArr[0];
+            urlFileName = fileArr[1];
 
             try{
-                File newFile = new File(saveFile);
+                File newFile = new File(saveFileName);
                 FileCopyUtils.copy(file.getInputStream(), new FileOutputStream(newFile));
             } catch (IOException e) {
                 e.printStackTrace();
@@ -84,8 +84,8 @@ public class BannerController extends BaseController{
         }
 
 
-        param.setFileName(saveFile);
-        param.setUrlName(urlFile);
+        param.setFileName(saveFileName);
+        param.setUrlName(urlFileName);
         param.setBannerName(request.getParameter("name"));
         param.setPosted(request.getParameterValues("isPost") == null ? false : true);
         param.setOpenMethod(request.getParameter("openMethod"));
@@ -115,7 +115,7 @@ public class BannerController extends BaseController{
         return "redirect:/admin/banner/list.do";
     }
 
-    private String[] saveNewFile(String basePath, String baseUrl, String leadFile) {
+    private String[] getNewSaveFile(String basePath, String baseUrl, String originalFileName) {
 
         LocalDate now = LocalDate.now();
 
@@ -125,7 +125,7 @@ public class BannerController extends BaseController{
                 String.format("%s/%d/%02d/", basePath, now.getYear(), now.getMonthValue()),
                 String.format("%s/%d/%02d/%02d/", basePath, now.getYear(), now.getMonthValue(), now.getDayOfMonth())};
 
-        String dirUrl = String.format("%s/%d/%02d/%02d/", baseUrl, now.getYear(), now.getMonthValue(), now.getDayOfMonth());
+        String urlDir = String.format("%s/%d/%02d/%02d/", baseUrl, now.getYear(), now.getMonthValue(), now.getDayOfMonth());
 
 
 
@@ -138,25 +138,25 @@ public class BannerController extends BaseController{
             }
         }
 
-        String extenseFile = "";
+        String fileExtension = "";
 
-        if (leadFile != null){
-            int dotLocation = leadFile.lastIndexOf(".");
-            if (dotLocation > -1){
-                extenseFile = leadFile.substring(dotLocation + 1);
+        if (originalFileName != null){
+            int dotPos = originalFileName.lastIndexOf(".");
+            if (dotPos > -1){
+                fileExtension = originalFileName.substring(dotPos + 1);
             }
         }
 
         String uuid = UUID.randomUUID().toString().replaceAll("-", "");
-        String newFile = String.format("%s%s", dirs[2], uuid);
-        String newUrl = String.format("%s%s", dirUrl, uuid);
+        String newFileName = String.format("%s%s", dirs[2], uuid);
+        String newUrlFileName = String.format("%s%s", urlDir, uuid);
 
-        if (extenseFile.length() > 0){
-            newFile += "." + extenseFile;
-            newUrl += "." + extenseFile;
+        if (fileExtension.length() > 0){
+            newFileName += "." + fileExtension;
+            newUrlFileName += "." + fileExtension;
         }
 
-        return new String[]{newFile, newUrl};
+        return new String[]{newFileName, newUrlFileName};
     }
 
     @GetMapping("/admin/banner/list.do")
